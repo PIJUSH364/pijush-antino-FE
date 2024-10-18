@@ -3,6 +3,7 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import TaskDetails from "./component/TaskDetails";
+import toast from "react-hot-toast";
 
 export default function App() {
   const [data, setData] = useState({ title: "", description: "" });
@@ -53,8 +54,10 @@ export default function App() {
             alert("Data added successfully");
           }
         })
-        .catch(() => {
-          throw new Error("Failed to add data");
+        .catch((res) => {
+          if (res.response.data.status == 400) {
+            alert(res.response.data.errors);
+          }
         });
     } catch (error) {
       console.error("Error adding data:", error);
