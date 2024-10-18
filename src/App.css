@@ -1,54 +1,84 @@
-/* Container to center the form */
+:root {
+  /* Typography */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Theme Variables */
+  --primary-color: #6200ea; /* Purple */
+  --primary-dark: #3700b3; /* Darker purple */
+  --light-bg: #f3e5f5; /* Light lavender */
+  --hover-bg: #e1bee7; /* Slightly darker lavender */
+  --text-color: #333; /* Standard dark text */
+  --form-bg: #ffffff; /* White background */
+  --border-color: #bdbdbd; /* Light border */
+  --shadow-color: rgba(0, 0, 0, 0.1); /* Shadow color */
+
+  /* System Settings */
+  color-scheme: light dark;
+  background-color: #242424;
+  color: var(--text-color);
+
+  /* Font Rendering */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Centering the Form Container */
 .form-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f5f5f5;
+  background-color: var(--light-bg); /* Light lavender background */
+  transition: background-color 0.3s ease-in-out; /* Smooth transition */
 }
 
-/* Form box styling */
+/* Form Box Styling */
 .form-box {
   display: flex;
   flex-direction: column;
   max-width: 400px;
   width: 100%;
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
   gap: 1rem;
+  border-radius: 12px;
+  background-color: var(--form-bg); /* White form background */
+  box-shadow: 0 8px 16px var(--shadow-color);
+  transition: box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
-/* Input field styling */
+/* Input Field Styling */
 input[type="text"] {
   padding: 0.75rem;
   border-radius: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   font-size: 1rem;
-  transition: all 0.3s;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input[type="text"]:focus {
-  border-color: #6200ea;
-  outline: none;
+  border-color: var(--primary-color); /* Purple border on focus */
   box-shadow: 0 0 5px rgba(98, 0, 234, 0.4);
+  outline: none;
 }
 
-/* Button styling */
+/* Button Styling */
 button[type="submit"] {
   padding: 0.75rem;
-  background-color: #6200ea;
-  color: #ffffff;
+  background-color: var(--primary-color);
+  color: #fff;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button[type="submit"]:hover {
-  background-color: #3700b3;
+  background-color: var(--primary-dark); /* Darker purple on hover */
   transform: scale(1.05);
 }
 
@@ -56,38 +86,52 @@ button[type="submit"]:active {
   transform: scale(0.98);
 }
 
-/* Responsive design */
+/* Responsive Design for Smaller Screens */
 @media (max-width: 600px) {
   .form-box {
     padding: 1rem;
   }
 }
 
-/* table view */
-
+/* Table Container for Consistency */
 .table-container {
   width: 80%;
-  margin: auto;
+  margin: 2rem auto;
   text-align: center;
+  background-color: var(--form-bg); /* Same white as form */
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px var(--shadow-color);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Table Styling */
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
+/* Table Header and Cell Styling */
 th,
 td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: var(--primary-color); /* Same purple as button */
+  color: white;
   font-weight: bold;
 }
 
-table thead {
-  color: black;
+/* Alternate Row Colors */
+tbody tr:nth-child(even) {
+  background-color: var(--light-bg); /* Lavender background */
+}
+
+tbody tr:hover {
+  background-color: var(--hover-bg); /* Darker lavender on hover */
 }

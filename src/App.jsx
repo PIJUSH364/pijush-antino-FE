@@ -2,22 +2,26 @@ import "./App.css";
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import TaskDetails from "./component/TaskDetails";
 
 export default function App() {
   const [data, setData] = useState({ title: "", description: "" });
   const [allData, setAllData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // Fetch all data from the API
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/data");
-      if (data.status === 200) setAllData(data.data);
-      else throw new Error("Failed to fetch data");
+      axios
+        .get("http://localhost:4000/allData")
+        .then((res) => {
+          if (res.data.status === 200) {
+            setAllData(res.data.data);
+          }
+        })
+        .catch(() => {
+          throw new Error("Failed to fetch data");
+        });
     } catch (err) {
-      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -40,37 +44,27 @@ export default function App() {
     const payload = { title, description };
 
     try {
-      const res = await axios.post("http://localhost:4000/generate", payload);
-      if (res.status === 200) {
-        alert("Data added successfully");
-        setData({ title: "", description: "" });
-        fetchData();
-      }
+      const res = await axios
+        .post("http://localhost:4000/createTask", payload)
+        .then((res) => {
+          if (res.data.status === 201) {
+            setData({ title: "", description: "" });
+            fetchData();
+            alert("Data added successfully");
+          }
+        })
+        .catch(() => {
+          throw new Error("Failed to add data");
+        });
     } catch (error) {
       console.error("Error adding data:", error);
     }
   };
 
-  const handleDelete = async (id) => {
-    try {
-      const res = await axios.delete(`http://localhost:4000/delete/${id}`);
-      if (res.status === 200) {
-        alert("Task deleted successfully");
-        fetchData(); // Refresh the table after deleting data
-      }
-    } catch (error) {
-      console.error("Error deleting task:", error);
-    }
-  };
-
-  if (loading) return <h2>Loading...</h2>;
-  if (error) return <h2>Error: {error}</h2>;
-  if (allData.length === 0) return <h2>No Data Available</h2>;
-
   return (
     <div>
-      {/* Form to Add Data */}
       <div
+        className="table-container"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -101,28 +95,24 @@ export default function App() {
       {/* Table to Display Data */}
       <div className="table-container">
         <h1>Task List</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {allData.map((item, index) => (
-              <tr key={item._id}>
-                <td>{index + 1}</td>
-                <td>{item.title}</td>
-                <td>{item.description}</td>
-                <td>
-                  <button onClick={() => handleDelete(item._id)}>Delete</button>
-                </td>
+        {loading && <h2>Loading...</h2>}
+        {!loading && allData.length === 0 && <h4>No Data Available</h4>}{" "}
+        {!loading && allData.length > 0 && (
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Details</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {allData.map((item, index) => (
+                <TaskDetails key={item._id} data={item} index={index} />
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
